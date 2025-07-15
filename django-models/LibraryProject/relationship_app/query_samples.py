@@ -60,28 +60,28 @@ def run_queries():
 
     # Query 2: List all books in a library.
     try:
-        target_library_name = "City Central Library"
-        city_library = Library.objects.get(name=target_library_name)
+        library_name = "City Central Library"
+        city_library = Library.objects.get(name=library_name)
         city_books = city_library.books.all()
-        print(f"\nBooks in '{target_library_name}':")
+        print(f"\nBooks in '{library_name}':")
         if city_books.exists():
             for book in city_books:
                 print(f"- {book.title}")
         else:
-            print(f"No books found in '{target_library_name}'.")
+            print(f"No books found in '{library_name}'.")
     except Library.DoesNotExist:
-        print(f"Library '{target_library_name}' not found.")
+        print(f"Library '{library_name}' not found.")
 
     # Query 3: Retrieve the librarian for a library.
     try:
-        target_library_name = "University Library"
-        university_library = Library.objects.get(name=target_library_name)
+        library_name = "University Library"
+        university_library = Library.objects.get(name=library_name)
         librarian_for_uni = university_library.librarian
-        print(f"\nLibrarian for '{target_library_name}': {librarian_for_uni.name}")
+        print(f"\nLibrarian for '{library_name}': {librarian_for_uni.name}")
     except Library.DoesNotExist:
-        print(f"Library '{target_library_name}' not found.")
+        print(f"Library '{library_name}' not found.")
     except Librarian.DoesNotExist:
-        print(f"No librarian found for '{target_library_name}'.")
+        print(f"No librarian found for '{library_name}'.")
 
 
 if __name__ == '__main__':
