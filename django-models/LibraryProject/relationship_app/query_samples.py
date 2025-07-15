@@ -1,0 +1,88 @@
+# django-models/LibraryProject/relationship_app/query_samples.py
+
+import os
+import sys
+import django
+
+# Add the project root directory to the Python path
+# This assumes the script is run from the `LibraryProject` directory
+# and that `manage.py` is in the same directory as the `LibraryProject` package.
+# Example: C:\ALX_BE_C5\Alx_DjangoLearnLab\django-models\LibraryProject
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(project_root)
+
+# Configure Django settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
+django.setup()
+
+from relationship_app.models import Author, Book, Library, Librarian
+
+def run_queries():
+    # --- Create some sample data for demonstration ---
+    print("--- Creating Sample Data ---")
+    author1, created = Author.objects.get_or_create(name="Jane Austen")
+    author2, created = Author.objects.get_or_create(name="George Orwell")
+    author3, created = Author.objects.get_or_create(name="F. Scott Fitzgerald")
+
+    book1, created = Book.objects.get_or_create(title="Pride and Prejudice", author=author1)
+    book2, created = Book.objects.get_or_create(title="Sense and Sensibility", author=author1)
+    book3, created = Book.objects.get_or_create(title="1984", author=author2)
+    book4, created = Book.objects.get_or_create(title="Animal Farm", author=author2)
+    book5, created = Book.objects.get_or_create(title="The Great Gatsby", author=author3)
+
+    library1, created = Library.objects.get_or_create(name="City Central Library")
+    library2, created = Library.objects.get_or_create(name="University Library")
+
+    # Add books to libraries (ManyToMany relationship)
+    library1.books.add(book1, book3, book5)
+    library2.books.add(book1, book2, book4)
+
+    # Create librarians (OneToOne relationship)
+    librarian1, created = Librarian.objects.get_or_create(name="Alice Smith", library=library1)
+    librarian2, created = Librarian.objects.get_or_create(name="Bob Johnson", library=library2)
+
+    print("Sample data created/ensured.")
+    print("\n--- Running Queries ---")
+
+    # Query 1: Query all books by a specific author.
+    try:
+        target_author_name = "Jane Austen"
+        jane_austen = Author.objects.get(name=target_author_name)
+        jane_austen_books = jane_austen.books.all()
+        print(f"\nBooks by {target_author_name}:")
+        if jane_austen_books.exists():
+            for book in jane_austen_books:
+                print(f"- {book.title}")
+        else:
+            print(f"No books found for {target_author_name}.")
+    except Author.DoesNotExist:
+        print(f"Author '{target_author_name}' not found.")
+
+    # Query 2: List all books in a library.
+    try:
+        target_library_name = "City Central Library"
+        city_library = Library.objects.get(name=target_library_name)
+        city_books = city_library.books.all()
+        print(f"\nBooks in '{target_library_name}':")
+        if city_books.exists():
+            for book in city_books:
+                print(f"- {book.title}")
+        else:
+            print(f"No books found in '{target_library_name}'.")
+    except Library.DoesNotExist:
+        print(f"Library '{target_library_name}' not found.")
+
+    # Query 3: Retrieve the librarian for a library.
+    try:
+        target_library_name = "University Library"
+        university_library = Library.objects.get(name=target_library_name)
+        librarian_for_uni = university_library.librarian
+        print(f"\nLibrarian for '{target_library_name}': {librarian_for_uni.name}")
+    except Library.DoesNotExist:
+        print(f"Library '{target_library_name}' not found.")
+    except Librarian.DoesNotExist:
+        print(f"No librarian found for '{target_library_name}'.")
+
+
+if __name__ == '__main__':
+    run_queries()
