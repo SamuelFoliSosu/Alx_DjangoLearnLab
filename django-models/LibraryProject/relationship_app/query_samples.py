@@ -46,17 +46,17 @@ def run_queries():
 
     # Query 1: Query all books by a specific author.
     try:
-        target_author_name = "Jane Austen"
-        jane_austen = Author.objects.get(name=target_author_name)
+        author_name = "Jane Austen"
+        jane_austen = Author.objects.get(name=author_name)
         jane_austen_books = jane_austen.books.all()
-        print(f"\nBooks by {target_author_name}:")
+        print(f"\nBooks by {author_name}:")
         if jane_austen_books.exists():
             for book in jane_austen_books:
                 print(f"- {book.title}")
         else:
-            print(f"No books found for {target_author_name}.")
+            print(f"No books found for {author_name}.")
     except Author.DoesNotExist:
-        print(f"Author '{target_author_name}' not found.")
+        print(f"Author '{author_name}' not found.")
 
     # Query 2: List all books in a library.
     try:
