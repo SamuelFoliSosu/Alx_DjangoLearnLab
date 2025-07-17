@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Detail</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Library: {{ library.name }}</h1>
+    <h2>Books in Library:</h2>
+    <ul>
+        {% for book in library.books.all %}
+        <li>{{ book.title }} by {{ book.author.name }}</li> {% endfor %}
+    </ul>
+    <p><a href="/app/books/">Back to all books</a></p>
+</body>
+</html>
