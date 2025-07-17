@@ -9,7 +9,7 @@ def book_list(request):
     context = {
         'books': books
     }
-    return render(request, 'list_books.html', context)
+    return render(request, 'relationship_app/list_books.html', context)
 
 # Class-based view to display details for a specific library
 class LibraryDetailView(DetailView):
