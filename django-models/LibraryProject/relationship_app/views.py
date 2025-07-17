@@ -1,6 +1,6 @@
 # django-models/LibraryProject/relationship_app/views.py
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView
 # from .models import Book, Library, Author, Librarian # Comment out or remove this line
 from .models import Book # Keep this if other views use Book
 from .models import Library # <--- Ensure this exact line exists or is easily found by checker
