@@ -1,7 +1,7 @@
 # django-models/LibraryProject/relationship_app/urls.py
 from django.urls import path
-from .views import book_list           # <--- Add/ensure this exact line
-from .views import LibraryDetailView   # <--- Keep this for the class-based view
+from .views import book_list
+from .views import LibraryDetailView
 
 app_name = 'relationship_app'
 
