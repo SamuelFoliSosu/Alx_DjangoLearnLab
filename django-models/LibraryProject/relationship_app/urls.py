@@ -1,10 +1,11 @@
-# django-models/LibraryProject/relationship_app/urls.py
+# django-models/LibraryProject/LibraryProject/urls.py
 from django.urls import path
-from .views import book_list, LibraryDetailView # Import views from the current app
+from .views import book_list
+from .views import LibraryDetailView
 
-app_name = 'relationship_app' # Namespace for this app's URLs
+app_name = 'relationship_app'
 
 urlpatterns = [
-    path('books/', book_list, name='book_list'),
-    path('libraries/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
+    path('books/', book_list, name='book_list'), # <--- Now directly reference book_list
+    path('libraries/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'), # <--- Now directly reference LibraryDetailView
 ]
