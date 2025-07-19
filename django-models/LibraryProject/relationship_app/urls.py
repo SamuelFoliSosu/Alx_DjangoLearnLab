@@ -5,6 +5,7 @@ from .views import LibraryDetailView
 # from .views import add_author
 # from .views import add_book
 from .views import register
+from django.conf import settings
 
 app_name = 'relationship_app'
 
@@ -17,7 +18,5 @@ urlpatterns = [
     # New Authentication URL patterns
     path('register/', register, name='register'), # Your custom registration view
     path('login/', auth_views.LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='relationship_app:logout'), name='logout'),
-    # Note: next_page for logout can also be set via settings.LOGOUT_REDIRECT_URL,
-    # but explicitly setting it here to the logout template URL is also common.
+    path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
 ]
