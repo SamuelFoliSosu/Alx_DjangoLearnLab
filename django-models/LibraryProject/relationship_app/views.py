@@ -6,7 +6,7 @@ from .models import Library
 from .models import Author
 from .models import Librarian
 
-def book_list(request):
+def list_books(request):
     books = Book.objects.all().order_by('title') # Get all books, ordered by title
     context = {
         'books': books
