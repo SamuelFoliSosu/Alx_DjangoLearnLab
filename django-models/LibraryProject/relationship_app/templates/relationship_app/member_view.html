@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style> /* Basic inline styles for readability */
+        body { font-family: sans-serif; margin: 20px; }
+        h1 { color: #28a745; }
+        p { margin-top: 10px; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        button { background-color: #f8f9fa; color: #343a40; border: 1px solid #ccc; padding: 8px 12px; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, Member {{ user.username }}!</h1>
+    <p>This content is only visible to users with the 'Member' role.</p>
+    <p>Explore books and manage your loans.</p>
+    <p><a href="{% url 'relationship_app:book_list' %}">Back to Book List</a></p>
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'relationship_app:logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% endif %}
+</body>
+</html>

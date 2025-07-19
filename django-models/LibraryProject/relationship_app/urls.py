@@ -20,4 +20,9 @@ urlpatterns = [
     path('register/', views.register, name='register'), # Your custom registration view
     path('login/', auth_views.LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='relationship_app/logout.html', next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
+
+    # NEW: Role-based access control URLs
+    path('admin-dashboard/', views.admin_view, name='admin_dashboard'),
+    path('librarian-dashboard/', views.librarian_view, name='librarian_dashboard'),
+    path('member-dashboard/', views.member_view, name='member_dashboard'),
 ]
