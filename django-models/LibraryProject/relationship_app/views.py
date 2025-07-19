@@ -11,9 +11,9 @@ def list_books(request):
     context = {
         'books': books
     }
-    return render(request, 'relationship_app/list_books.html', context)
+    return render(request, 'list_books.html', context)
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = 'relationship_app/library_detail.html'
+    template_name = 'library_detail.html'
     context_object_name = 'library'
