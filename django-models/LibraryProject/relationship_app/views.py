@@ -5,7 +5,7 @@ from .models import Book
 from .models import Library
 # from .models import Author
 # from .models import Librarian
-from django.shortcuts import render, redirect # Ensure redirect is imported
+from django.shortcuts import redirect # Ensure redirect is imported
 from django.urls import reverse # For redirecting to URL names
 from django.contrib.auth.forms import UserCreationForm # For user registration
 from django.contrib.auth import login # To log the user in after registration
