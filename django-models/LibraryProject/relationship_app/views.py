@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from .models import Book
 from .models import Library
-from .models import Author
-from .models import Librarian
+# from .models import Author
+# from .models import Librarian
 from django.shortcuts import render, redirect # Ensure redirect is imported
 from django.urls import reverse # For redirecting to URL names
 from django.contrib.auth.forms import UserCreationForm # For user registration
