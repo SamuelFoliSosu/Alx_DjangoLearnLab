@@ -11,6 +11,8 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+    publication_date = models.DateField()
+    isbn = models.CharField(max_length=13, unique=True)
     # Use related_name='books' to access books from an author instance: author_instance.books.all()
 
     def __str__(self):
@@ -20,6 +22,14 @@ class Library(models.Model):
     name = models.CharField(max_length=100)
     books = models.ManyToManyField(Book, related_name='libraries')
     # Use related_name='libraries' to access libraries from a book instance: book_instance.libraries.all()
+
+    class Meta:
+        # Define custom permissions here
+        permissions = [
+            ("can_add_book", "Can add book"),
+            ("can_change_book", "Can change book"),
+            ("can_delete_book", "Can delete book"),
+        ]
 
     def __str__(self):
         return self.name

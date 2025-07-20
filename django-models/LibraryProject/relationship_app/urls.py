@@ -2,8 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import list_books
 from .views import LibraryDetailView
-# from .views import add_author
-# from .views import add_book
+from .views import add_author
+from .views import add_book
 from .views import register
 from django.conf import settings
 from . import views
@@ -13,8 +13,8 @@ app_name = 'relationship_app'
 urlpatterns = [
     path('books/', list_books, name='book_list'),
     path('libraries/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
-    # path('authors/add/', add_author, name='add_author'),
-    # path('books/add/', add_book, name='add_book'),
+    path('authors/add/', add_author, name='add_author'),
+    path('books/add/', add_book, name='add_book'),
 
     # New Authentication URL patterns
     path('register/', views.register, name='register'), # Your custom registration view
@@ -25,4 +25,9 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_view, name='admin_dashboard'),
     path('librarian-dashboard/', views.librarian_view, name='librarian_dashboard'),
     path('member-dashboard/', views.member_view, name='member_dashboard'),
+
+    # NEW: Secured Book Action URLs
+    # path('books/add/', views.add_book, name='add_book'), # This should already be here, ensure it's correct
+    path('books/<int:pk>/edit/', views.edit_book, name='edit_book'),
+    path('books/<int:pk>/delete/', views.delete_book, name='delete_book'),
 ]
