@@ -12,4 +12,4 @@ class BookForm(forms.ModelForm):
 class AuthorForm(forms.ModelForm): # Assuming you have an Author model and need a form for it
     class Meta:
         model = Author
-        fields = ['name', 'bio'] # Adjust fields based on your Author model
+        fields = ['name'] # Adjust fields based on your Author model
