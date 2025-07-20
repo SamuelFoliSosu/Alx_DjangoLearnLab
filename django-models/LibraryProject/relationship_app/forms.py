@@ -7,7 +7,7 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         # Include all fields you want to be editable in the form
-        fields = ['title', 'author', 'publication_date', 'isbn']
+        fields = ['title', 'author']
 
 class AuthorForm(forms.ModelForm): # Assuming you have an Author model and need a form for it
     class Meta:
