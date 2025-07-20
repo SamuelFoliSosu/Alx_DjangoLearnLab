@@ -11,10 +11,10 @@ from . import views
 app_name = 'relationship_app'
 
 urlpatterns = [
-    path('books/', list_books, name='book_list'),
+    path('books/', list_books, name='list_books'),
     path('libraries/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
     path('authors/add/', add_author, name='add_author'),
-    path('books/add/', add_book, name='add_book'),
+    path('books/add_book/', add_book, name='add_book'),
 
     # New Authentication URL patterns
     path('register/', views.register, name='register'), # Your custom registration view
@@ -27,6 +27,6 @@ urlpatterns = [
     path('member-dashboard/', views.member_view, name='member_dashboard'),
 
     # NEW: Secured Book Action URLs
-    path('books/<int:pk>/edit/', views.edit_book, name='edit_book'),
-    path('books/<int:pk>/delete/', views.delete_book, name='delete_book'),
+    path('books/<int:pk>/edit_book/', views.edit_book, name='edit_book'),
+    path('books/<int:pk>/delete_book/', views.delete_book, name='delete_book'),
 ]
