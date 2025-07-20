@@ -11,7 +11,8 @@ from django.shortcuts import redirect # Ensure redirect is imported
 from django.urls import reverse # For redirecting to URL names
 from django.contrib.auth.forms import UserCreationForm # For user registration
 from django.contrib.auth import login # To log the user in after registration
-from django.contrib.auth.decorators import login_required, user_passes_test, permission_required # NEW IMPORTS
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import permission_required
 from .forms import BookForm, AuthorForm # NEW: Import BookForm and AuthorForm
 # from .models import UserProfile # No need to import UserProfile directly, access via request.user.userprofile
 
