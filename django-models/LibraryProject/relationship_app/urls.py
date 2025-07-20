@@ -27,7 +27,6 @@ urlpatterns = [
     path('member-dashboard/', views.member_view, name='member_dashboard'),
 
     # NEW: Secured Book Action URLs
-    path('books/add/', views.add_book, name='add_book'), # This should already be here, ensure it's correct
     path('books/<int:pk>/edit/', views.edit_book, name='edit_book'),
     path('books/<int:pk>/delete/', views.delete_book, name='delete_book'),
 ]
