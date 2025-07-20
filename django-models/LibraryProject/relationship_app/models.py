@@ -11,8 +11,8 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
-    publication_date = models.DateField()
-    isbn = models.CharField(max_length=13, unique=True)
+    # publication_date = models.DateField()
+    # isbn = models.CharField(max_length=13, unique=True)
     # Use related_name='books' to access books from an author instance: author_instance.books.all()
 
     def __str__(self):
