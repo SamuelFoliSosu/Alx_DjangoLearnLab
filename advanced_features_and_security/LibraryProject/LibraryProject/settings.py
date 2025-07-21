@@ -82,6 +82,8 @@ DATABASES = {
     }
 }
 
+# Point to the custom user model in your existing app
+AUTH_USER_MODEL = 'relationship_app.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -127,3 +129,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authentication Redirect URLs
 LOGIN_REDIRECT_URL = '/app/books/'  # Redirect to the book list after successful login
 LOGOUT_REDIRECT_URL = '/app/login/' # Redirect to the login page after successful logout
+
+# Media files configuration (for profile_photo)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
