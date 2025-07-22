@@ -1,31 +1,48 @@
-# django-models/LibraryProject/relationship_app/admin.py
-
+# advanced_features_and_security/relationship_app/admin.py
 from django.contrib import admin
-from .models import UserProfile, Library, Author, Book # Import all your models here
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, Author, Book, Library, Librarian # Import all your models
 
 class CustomUserAdmin(UserAdmin):
+    """
+    Custom Admin configuration for the CustomUser model,
+    including role, date_of_birth, and profile_photo.
+    """
     model = CustomUser
-    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'date_of_birth')
-    
-    # Fix the ordering error by specifying a field that exists
+    list_display = (
+        'email',
+        'first_name',
+        'last_name',
+        'is_staff',
+        'is_active',
+        'date_of_birth',
+        'profile_photo',
+        'role', # Include the new role field
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'email', 'password', 'password2',
+                'first_name', 'last_name', 'date_of_birth', 'profile_photo', 'role'
+            )} # Include role in add form
+        ),
+    )
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth', 'profile_photo', 'role')}), # Include role in change form
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    search_fields = ('email', 'first_name', 'last_name')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'role', 'groups') # Add role to filters
     ordering = ('email',)
-    
-    # Add custom fields to the admin display
-    fieldsets = UserAdmin.fieldsets + (
-        ('Custom Profile', {'fields': ('date_of_birth', 'profile_photo')}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Custom Profile', {'fields': ('date_of_birth', 'profile_photo')}),
-    )
 
-# --- CRITICAL CHANGE HERE ---
-# Register CustomUser (with its custom admin class) FIRST
+# Register your CustomUser model with the CustomUserAdmin
 admin.site.register(CustomUser, CustomUserAdmin)
 
-# Then register other models that might depend on CustomUser
-admin.site.register(UserProfile)
-admin.site.register(Library)
+# Register your other models as they were before
 admin.site.register(Author)
 admin.site.register(Book)
+admin.site.register(Library)
+admin.site.register(Librarian)

@@ -16,6 +16,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 # PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Specify your custom user model as the default for the project
+AUTH_USER_MODEL = 'relationship_app.CustomUser'
+
+# Settings for media files (needed for profile_photo ImageField)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Make sure BASE_DIR is defined (it usually is)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -82,8 +89,6 @@ DATABASES = {
     }
 }
 
-# Point to the custom user model in your existing app
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -129,7 +134,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authentication Redirect URLs
 LOGIN_REDIRECT_URL = '/app/books/'  # Redirect to the book list after successful login
 LOGOUT_REDIRECT_URL = '/app/login/' # Redirect to the login page after successful logout
-
-# Media files configuration (for profile_photo)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'

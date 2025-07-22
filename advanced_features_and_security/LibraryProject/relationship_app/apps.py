@@ -7,4 +7,5 @@ class RelationshipAppConfig(AppConfig):
 
     def ready(self):
         # Import your signals here to ensure they are registered
-        import relationship_app.signals # noqa F401
+        # import relationship_app.signals # noqa F401
+        pass

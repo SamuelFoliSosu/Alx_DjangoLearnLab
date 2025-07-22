@@ -1,11 +1,11 @@
-# django-models/relationship_app/models.py
-from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import BaseUserManager
-from django.utils.translation import gettext_lazy as _
+# advanced_features_and_security/relationship_app/models.py
 
-# --- Custom User Model and Manager Added ---
+from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.translation import gettext_lazy as _
+# from django.conf import settings # Needed if other models were referencing User
+
+# --- Custom User Model and Manager (New/Modified) ---
 
 class CustomUserManager(BaseUserManager):
     """
@@ -32,24 +32,40 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_superuser=True.'))
         return self.create_user(email, password, **extra_fields)
 
-
 class CustomUser(AbstractUser):
+    """
+    Custom User model extending AbstractUser.
+    - Uses email as the unique identifier.
+    - Includes date_of_birth, profile_photo, and role fields.
+    """
+    # Define choices for user roles, integrated directly into CustomUser
+    ROLE_CHOICES = (
+        ('Admin', 'Admin'),
+        ('Librarian', 'Librarian'),
+        ('Member', 'Member'),
+    )
+
     username = None # Remove username field
     email = models.EmailField(_('email address'), unique=True)
 
-    # Add your custom fields
+    # Custom Fields from Task Description:
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
+    # Custom Field from your original UserProfile:
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    # 'email' is already implicitly required due to unique=True.
+    # 'role' will have a default, so it's not strictly required on creation.
+    REQUIRED_FIELDS = ['date_of_birth'] # Example: makes date_of_birth required for superusers if needed.
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return f"{self.email} ({self.get_role_display()})" # Use get_role_display() for readable role
 
-# --- Existing Models ---
+# --- Existing Models (No Changes Needed for their relationships here) ---
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -60,8 +76,6 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
-    # publication_date = models.DateField()
-    # isbn = models.CharField(max_length=13, unique=True)
 
     def __str__(self):
         return self.title
@@ -69,7 +83,7 @@ class Book(models.Model):
 class Library(models.Model):
     name = models.CharField(max_length=100)
     books = models.ManyToManyField(Book, related_name='libraries')
-    
+
     class Meta:
         permissions = [
             ("can_add_book", "Can add book"),
@@ -86,20 +100,3 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
-    
-# --- UserProfile Model Updated ---
-class UserProfile(models.Model):
-    ROLE_CHOICES = (
-        ('Admin', 'Admin'),
-        ('Librarian', 'Librarian'),
-        ('Member', 'Member'),
-    )
-
-    # 1. Point to the new custom user model defined in settings.py
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
-
-    def __str__(self):
-        # 2. Updated string representation to use email instead of username
-        return f"{self.user.email}'s Profile ({self.role})"
