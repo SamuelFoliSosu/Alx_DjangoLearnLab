@@ -17,10 +17,17 @@ Including another URLconf
 # django-models/LibraryProject/LibraryProject/urls.py
 from django.contrib import admin
 from django.urls import path, include # Import include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('app/', include('relationship_app.urls')), # Include your app's URLs here
+    path('', include('bookshelf.urls')), # Now pointing to bookshelf.urls
+    # path('relationship/', include('relationship_app.urls')), # Keep if you have one
     # You can choose any prefix for your app, '/app/' is just an example.
     # e.g., path('library_data/', include('relationship_app.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
