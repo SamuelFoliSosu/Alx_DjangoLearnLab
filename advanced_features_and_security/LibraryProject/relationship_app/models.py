@@ -1,53 +1,62 @@
-# advanced_features_and_security/relationship_app/models.py
+# # django-models/relationship_app/models.py
+# from django.db import models
+# from django.contrib.auth.models import User
 
-from django.db import models
-# from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.utils.translation import gettext_lazy as _
-# from django.conf import settings # Needed if other models were referencing User
+# class Author(models.Model):
+#     name = models.CharField(max_length=100)
 
-class Author(models.Model):
-    name = models.CharField(max_length=100)
+#     def __str__(self):
+#         return self.name
 
-    def __str__(self):
-        return self.name
+# class Book(models.Model):
+#     title = models.CharField(max_length=200)
+#     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+#     # publication_date = models.DateField()
+#     # isbn = models.CharField(max_length=13, unique=True)
+#     # Use related_name='books' to access books from an author instance: author_instance.books.all()
 
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+#     def __str__(self):
+#         return self.title
 
-    class Meta:
-        # Define Custom Permissions for the Book model
-        permissions = [
-            ("can_view_book", "Can view book details"),  # Using more specific names
-            ("can_create_book", "Can create new books"),
-            ("can_edit_book", "Can edit existing books"),
-            ("can_delete_book", "Can delete books"),
-        ]
+# class Library(models.Model):
+#     name = models.CharField(max_length=100)
+#     books = models.ManyToManyField(Book, related_name='libraries')
+#     # Use related_name='libraries' to access libraries from a book instance: book_instance.libraries.all()
 
-    def __str__(self):
-        return self.title
+#     class Meta:
+#         # Define custom permissions here
+#         permissions = [
+#             ("can_add_book", "Can add book"),
+#             ("can_change_book", "Can change book"),
+#             ("can_delete_book", "Can delete book"),
+#         ]
 
-class Library(models.Model):
-    name = models.CharField(max_length=100)
-    books = models.ManyToManyField(Book, related_name='libraries')
+#     def __str__(self):
+#         return self.name
 
-    class Meta:
-        # Define custom permissions for Library model as per your original file
-        permissions = [
-            ("can_add_book", "Can add book to library"),    # These are likely about adding/removing books from Library M2M
-            ("can_change_book", "Can change book in library"),
-            ("can_delete_book", "Can delete book from library"),
-        ]
-        # Note: The 'can_add_book', 'can_change_book', 'can_delete_book' permissions here
-        # are distinct from the Book model's permissions because they are defined on Library.
-        # They imply control over the relationship, not the Book object itself.
+# class Librarian(models.Model):
+#     name = models.CharField(max_length=100)
+#     library = models.OneToOneField(Library, on_delete=models.CASCADE, primary_key=True, related_name='librarian')
+#     # primary_key=True makes the Librarian's primary key also the foreign key to Library,
+#     # ensuring a true 1-to-1 where each Librarian IS a specific Library's librarian.
+#     # related_name='librarian' allows accessing the librarian from a library instance: library_instance.librarian
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
-class Librarian(models.Model):
-    name = models.CharField(max_length=100)
-    library = models.OneToOneField(Library, on_delete=models.CASCADE, primary_key=True, related_name='librarian')
+# class UserProfile(models.Model):
+#     # Define choices for user roles
+#     ROLE_CHOICES = (
+#         ('Admin', 'Admin'),
+#         ('Librarian', 'Librarian'),
+#         ('Member', 'Member'),
+#     )
 
-    def __str__(self):
-        return self.name
+#     # One-to-one relationship with Django's User model
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     # Role field with predefined choices, default to 'Member'
+#     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
+
+#     def __str__(self):
+#         # String representation for the UserProfile object
+#         return f"{self.user.username}'s Profile ({self.role})"

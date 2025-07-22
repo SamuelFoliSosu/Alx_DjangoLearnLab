@@ -1,11 +1,10 @@
-# advanced_features_and_security/relationship_app/admin.py
-from django.contrib import admin
-# from django.contrib.auth.admin import UserAdmin
-from .models import Author, Book, Library, Librarian # Import all your models
+# # django-models/LibraryProject/relationship_app/admin.py
 
+# from django.contrib import admin
+# from .models import UserProfile, Library, Author, Book # Import all your models here
 
-# Register your other models as they were before
-admin.site.register(Author)
-admin.site.register(Book)
-admin.site.register(Library)
-admin.site.register(Librarian)
+# # Register your models here.
+# admin.site.register(UserProfile)
+# admin.site.register(Library) # Also register other models if you haven't already
+# admin.site.register(Author)
+# admin.site.register(Book)

@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('relationship_app.urls')), # Include your app's URLs here
+    # path('app/', include('relationship_app.urls')), # Include your app's URLs here
     path('', include('bookshelf.urls')), # Now pointing to bookshelf.urls
     # path('relationship/', include('relationship_app.urls')), # Keep if you have one
     # You can choose any prefix for your app, '/app/' is just an example.

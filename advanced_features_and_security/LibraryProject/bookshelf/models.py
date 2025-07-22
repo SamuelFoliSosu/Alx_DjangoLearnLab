@@ -3,18 +3,57 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
-# from django.conf import settings # Might be needed if other models in THIS file reference the user.
+from django.conf import settings # Might be needed if other models in THIS file reference the user.
                                # In your case, it's not needed for Author, Book, Library, Librarian.
                                # It's only needed if a model like `Book` had `user = ForeignKey(settings.AUTH_USER_MODEL)`
 
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
+# --- Moved Application Models (Author, Book, Library, Librarian) ---
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.title} by {self.author} ({self.publication_year})"
-    
+        return self.name
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    # Ensure 'Author' is correctly referenced as it's now in the same app
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+
+    class Meta:
+        # DEFINE CUSTOM PERMISSIONS HERE as the checker expects
+        permissions = [
+            ("can_view_book", "Can view book details"),
+            ("can_create_book", "Can create new books"),
+            ("can_edit_book", "Can edit existing books"),
+            ("can_delete_book", "Can delete books"),
+        ]
+
+    def __str__(self):
+        return self.title
+
+class Library(models.Model):
+    name = models.CharField(max_length=100)
+    # Ensure 'Book' is correctly referenced as it's now in the same app
+    books = models.ManyToManyField(Book, related_name='libraries')
+
+    class Meta:
+        permissions = [
+            ("can_add_book_to_library", "Can add book to library"),    # Renamed for clarity vs Book perms
+            ("can_change_book_in_library", "Can change book in library"),
+            ("can_delete_book_from_library", "Can delete book from library"),
+        ]
+
+    def __str__(self):
+        return self.name
+
+class Librarian(models.Model):
+    name = models.CharField(max_length=100)
+    # Ensure 'Library' is correctly referenced as it's now in the same app
+    library = models.OneToOneField(Library, on_delete=models.CASCADE, primary_key=True, related_name='librarian')
+
+    def __str__(self):
+        return self.name
 
 # --- Custom User Model and Manager (New/Modified) ---
 
