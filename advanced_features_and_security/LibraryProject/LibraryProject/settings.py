@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Specify your custom user model as the default for the project
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 # Settings for media files (needed for profile_photo ImageField)
 MEDIA_URL = '/media/'
