@@ -140,3 +140,77 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authentication Redirect URLs
 LOGIN_REDIRECT_URL = '/app/books/'  # Redirect to the book list after successful login
 LOGOUT_REDIRECT_URL = '/app/login/' # Redirect to the login page after successful logout
+
+# --- CONTINUED SECURITY CONFIGURATION ---
+
+# 2. Secure Browser Protections
+# Prevents content from being sniffed away from its declared content type.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# Protects against XSS attacks by enabling browser's XSS filter.
+SECURE_BROWSER_XSS_FILTER = True
+# Prevents clickjacking attacks by limiting how your site can be embedded in iframes.
+X_FRAME_OPTIONS = 'DENY' # Or 'SAMEORIGIN' if you legitimately need to embed your site on your own domain
+
+# 3. Secure Cookies
+# Ensures CSRF cookie is only sent over HTTPS.
+CSRF_COOKIE_SECURE = True
+# Ensures session cookie is only sent over HTTPS.
+SESSION_COOKIE_SECURE = True
+
+# Optional: HTTP Strict Transport Security (HSTS) - highly recommended for production
+# Forces browsers to interact with your site only over HTTPS for a specified duration.
+# SECURE_HSTS_SECONDS = 31536000 # 1 year
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True # Requires you to submit your domain to the HSTS preload list
+
+# Optional: Redirect all HTTP traffic to HTTPS (requires SECURE_PROXY_SSL_HEADER for reverse proxies)
+# SECURE_SSL_REDIRECT = True
+# SECRES_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+# --- END SECURITY CONFIGURATION ---
+
+
+# --- Content Security Policy (CSP) Configuration ---
+# More info: https://django-csp.readthedocs.io/en/latest/
+
+# CSP_DEFAULT_SRC: Default sources for all content types
+CSP_DEFAULT_SRC = ("'self'",) # Allow content only from the same origin
+
+# CSP_SCRIPT_SRC: Sources for JavaScript
+# Allow scripts from self, your CDN (if any), and 'unsafe-inline' (use with caution, only if necessary for small inline scripts)
+# or 'nonce-<random>' for specific inline scripts. 'unsafe-eval' for eval().
+# For basic projects, 'self' is a good start. Add more as needed.
+CSP_SCRIPT_SRC = ("'self'",) # , 'https://cdn.jsdelivr.net', "'unsafe-inline'"
+
+# CSP_STYLE_SRC: Sources for CSS
+CSP_STYLE_SRC = ("'self'",) # , 'https://fonts.googleapis.com', "'unsafe-inline'"
+
+# CSP_IMG_SRC: Sources for images
+CSP_IMG_SRC = ("'self'", 'data:') # 'data:' allows data URIs for small images/icons
+
+# CSP_FONT_SRC: Sources for fonts
+CSP_FONT_SRC = ("'self'",) # , 'https://fonts.gstatic.com'
+
+# CSP_CONNECT_SRC: Sources for Fetch/XHR, WebSockets
+CSP_CONNECT_SRC = ("'self'",)
+
+# CSP_OBJECT_SRC: Sources for <object>, <embed>, <applet>
+CSP_OBJECT_SRC = ("'none'",) # Disallow plugins
+
+# CSP_FRAME_ANCESTORS: Sources that can embed your page (e.g., in an iframe)
+# This overlaps with X_FRAME_OPTIONS but CSP provides more granular control.
+CSP_FRAME_ANCESTORS = ("'self'",) # Only allow embedding from your own domain. 'none' would disallow completely.
+
+# CSP_FORM_ACTION: Destinations for form submissions
+CSP_FORM_ACTION = ("'self'",)
+
+# CSP_BASE_URI: Base URI for relative URLs
+CSP_BASE_URI = ("'self'",)
+
+# Optional: Report Only Mode (for testing) - reports violations without blocking
+# CSP_REPORT_ONLY = DEBUG # Set to True while developing to see violations in console
+# CSP_REPORT_URI = "/csp-report/" # Where violation reports are sent (you'd need a view for this)
+
+# For development, you might need to relax some policies if you're pulling from many external sources.
+# For production, aim for the strictest possible.
