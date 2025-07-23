@@ -143,31 +143,42 @@ LOGOUT_REDIRECT_URL = '/app/login/' # Redirect to the login page after successfu
 
 # --- CONTINUED SECURITY CONFIGURATION ---
 
-# 2. Secure Browser Protections
-# Prevents content from being sniffed away from its declared content type.
-SECURE_CONTENT_TYPE_NOSNIFF = True
-# Protects against XSS attacks by enabling browser's XSS filter.
-SECURE_BROWSER_XSS_FILTER = True
-# Prevents clickjacking attacks by limiting how your site can be embedded in iframes.
-X_FRAME_OPTIONS = 'DENY' # Or 'SAMEORIGIN' if you legitimately need to embed your site on your own domain
+# --- HTTPS AND SECURE HEADERS CONFIGURATION (Task 3) ---
 
-# 3. Secure Cookies
+# Step 1: Configure Django for HTTPS Support
+# Redirects all non-HTTPS requests to HTTPS. Essential for production.
+SECURE_SSL_REDIRECT = True
+# Tells browsers to only connect via HTTPS for the specified time (in seconds).
+# 31536000 seconds = 1 year. This is a strong security measure.
+SECURE_HSTS_SECONDS = 31536000
+# Includes subdomains in the HSTS policy.
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# Allows domain to be submitted to browser HSTS preload lists (requires strict adherence).
+SECURE_HSTS_PRELOAD = True
+
+# When running behind a reverse proxy (e.g., Nginx, Apache), Django needs to know
+# that the request is secure. The proxy adds a header like 'X-Forwarded-Proto'.
+# Configure this if SECURE_SSL_REDIRECT = True and you're behind a proxy.
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+# Step 2: Enforce Secure Cookies
 # Ensures CSRF cookie is only sent over HTTPS.
 CSRF_COOKIE_SECURE = True
 # Ensures session cookie is only sent over HTTPS.
 SESSION_COOKIE_SECURE = True
-
-# Optional: HTTP Strict Transport Security (HSTS) - highly recommended for production
-# Forces browsers to interact with your site only over HTTPS for a specified duration.
-# SECURE_HSTS_SECONDS = 31536000 # 1 year
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True # Requires you to submit your domain to the HSTS preload list
-
-# Optional: Redirect all HTTP traffic to HTTPS (requires SECURE_PROXY_SSL_HEADER for reverse proxies)
-# SECURE_SSL_REDIRECT = True
-# SECRES_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Ensure this too for general cookies.
+# SESSION_COOKIE_SAMESITE = 'Lax' # Recommended for modern browsers
 
 
+# Step 3: Implement Secure Headers
+# Prevents clickjacking by disallowing embedding of your site in iframes.
+# 'DENY' completely prevents embedding. 'SAMEORIGIN' allows embedding on your own domain.
+X_FRAME_OPTIONS = 'DENY'
+# Prevents browsers from MIME-sniffing a response away from the declared Content-Type.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# Enables browser's built-in XSS filter. Note: Browsers are deprecating this. CSP is better.
+SECURE_BROWSER_XSS_FILTER = True
 # --- END SECURITY CONFIGURATION ---
 
 
