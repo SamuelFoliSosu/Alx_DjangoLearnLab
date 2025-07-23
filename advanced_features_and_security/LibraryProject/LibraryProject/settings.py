@@ -171,46 +171,21 @@ SESSION_COOKIE_SECURE = True
 # --- END SECURITY CONFIGURATION ---
 
 
-# --- Content Security Policy (CSP) Configuration ---
-# More info: https://django-csp.readthedocs.io/en/latest/
-
-# CSP_DEFAULT_SRC: Default sources for all content types
-CSP_DEFAULT_SRC = ("'self'",) # Allow content only from the same origin
-
-# CSP_SCRIPT_SRC: Sources for JavaScript
-# Allow scripts from self, your CDN (if any), and 'unsafe-inline' (use with caution, only if necessary for small inline scripts)
-# or 'nonce-<random>' for specific inline scripts. 'unsafe-eval' for eval().
-# For basic projects, 'self' is a good start. Add more as needed.
-CSP_SCRIPT_SRC = ("'self'",) # , 'https://cdn.jsdelivr.net', "'unsafe-inline'"
-
-# CSP_STYLE_SRC: Sources for CSS
-CSP_STYLE_SRC = ("'self'",) # , 'https://fonts.googleapis.com', "'unsafe-inline'"
-
-# CSP_IMG_SRC: Sources for images
-CSP_IMG_SRC = ("'self'", 'data:') # 'data:' allows data URIs for small images/icons
-
-# CSP_FONT_SRC: Sources for fonts
-CSP_FONT_SRC = ("'self'",) # , 'https://fonts.gstatic.com'
-
-# CSP_CONNECT_SRC: Sources for Fetch/XHR, WebSockets
-CSP_CONNECT_SRC = ("'self'",)
-
-# CSP_OBJECT_SRC: Sources for <object>, <embed>, <applet>
-CSP_OBJECT_SRC = ("'none'",) # Disallow plugins
-
-# CSP_FRAME_ANCESTORS: Sources that can embed your page (e.g., in an iframe)
-# This overlaps with X_FRAME_OPTIONS but CSP provides more granular control.
-CSP_FRAME_ANCESTORS = ("'self'",) # Only allow embedding from your own domain. 'none' would disallow completely.
-
-# CSP_FORM_ACTION: Destinations for form submissions
-CSP_FORM_ACTION = ("'self'",)
-
-# CSP_BASE_URI: Base URI for relative URLs
-CSP_BASE_URI = ("'self'",)
-
-# Optional: Report Only Mode (for testing) - reports violations without blocking
-# CSP_REPORT_ONLY = DEBUG # Set to True while developing to see violations in console
-# CSP_REPORT_URI = "/csp-report/" # Where violation reports are sent (you'd need a view for this)
-
-# For development, you might need to relax some policies if you're pulling from many external sources.
-# For production, aim for the strictest possible.
+# --- Content Security Policy (CSP) Configuration (Updated for django-csp >= 4.0) ---
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'base-uri': ("'self'",),
+        'connect-src': ("'self'",),
+        'default-src': ("'self'",),
+        'font-src': ("'self'",),
+        'form-action': ("'self'",),
+        'frame-ancestors': ("'self'",),
+        'img-src': ("'self'", 'data:'),
+        'object-src': ("'none'",),
+        'script-src': ("'self'",),
+        'style-src': ("'self'",),
+    }
+    # You can also add 'REPORT_ONLY': True or 'REPORT_URI': '/csp-report/' here if needed
+    # 'REPORT_ONLY': True, # For testing, sends reports to console/report_uri without blocking
+    # 'REPORT_URI': '/csp-report/', # Endpoint for CSP violation reports
+}
