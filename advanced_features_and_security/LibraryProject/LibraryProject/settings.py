@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     # 'relationship_app.apps.RelationshipAppConfig'
+    
+    # For Content Security Policy (django-csp) - will install later
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Add CSP middleware here (for Step 4)
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
