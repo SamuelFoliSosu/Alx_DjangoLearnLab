@@ -179,7 +179,7 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 # Enables browser's built-in XSS filter. Note: Browsers are deprecating this. CSP is better.
 SECURE_BROWSER_XSS_FILTER = True
-# --- END SECURITY CONFIGURATION ---
+# --- END SECURITY CONFIGURATION --- 
 
 
 # --- Content Security Policy (CSP) Configuration (Updated for django-csp >= 4.0) ---
