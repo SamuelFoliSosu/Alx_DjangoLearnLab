@@ -38,8 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken'
     'api',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication', # Enable Token Authentication
+        'rest_framework.authentication.SessionAuthentication', # Keep Session Authentication for browsable API
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # We'll set this more specifically per view/viewset in Step 3
+        'rest_framework.permissions.AllowAny', # Default to Allow Any for now, will restrict later
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
