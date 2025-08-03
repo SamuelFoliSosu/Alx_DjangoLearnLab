@@ -49,7 +49,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         # We'll set this more specifically per view/viewset in Step 3
-        'rest_framework.permissions.AllowAny', # Default to Allow Any for now, will restrict later
+        'rest_framework.permissions.IsAuthenticated', # Default to Allow Any for now, will restrict later
     ]
 }
 
