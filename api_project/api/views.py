@@ -1,6 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import viewsets
-from rest_framework import generics
+from rest_framework import generics, viewsets # Ensure viewsets is here
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny # If you need these
 from .models import Book
 from .serializers import BookSerializer
 
