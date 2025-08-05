@@ -19,7 +19,9 @@ class BookAPITests(APITestCase):
         This method runs before each test.
         """
         # Create a test user for authenticated requests
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.username = 'testuser'
+        self.password = 'testpassword'
+        self.user = User.objects.create_user(username=self.username, password=self.password)
 
         # Create authors
         self.author1 = Author.objects.create(name='Jane Austen')
@@ -166,7 +168,8 @@ class BookAPITests(APITestCase):
         Ensure authenticated users can create a book.
         Permissions: IsAuthenticated
         """
-        self.client.force_authenticate(user=self.user) # Authenticate the client
+        # Use self.client.login() for authentication as per checker requirement
+        self.assertTrue(self.client.login(username=self.username, password=self.password))
         data = {
             'title': 'New Book by Authored User',
             'publication_year': 2023,
@@ -181,7 +184,7 @@ class BookAPITests(APITestCase):
         """
         Test custom validation for future publication year during book creation.
         """
-        self.client.force_authenticate(user=self.user)
+        self.assertTrue(self.client.login(username=self.username, password=self.password))
         future_year = timezone.now().year + 1
         data = {
             'title': 'Future Book',
@@ -213,7 +216,7 @@ class BookAPITests(APITestCase):
         Ensure authenticated users can update a book.
         Permissions: IsAuthenticated
         """
-        self.client.force_authenticate(user=self.user)
+        self.assertTrue(self.client.login(username=self.username, password=self.password))
         data = {'title': 'Updated Pride and Prejudice', 'publication_year': 1813, 'author': self.author1.id}
         response = self.client.put(self.update_url(self.book1.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -225,7 +228,7 @@ class BookAPITests(APITestCase):
         Ensure authenticated users can partially update a book (PATCH).
         Permissions: IsAuthenticated
         """
-        self.client.force_authenticate(user=self.user)
+        self.assertTrue(self.client.login(username=self.username, password=self.password))
         data = {'publication_year': 1814} # Only update publication year
         response = self.client.patch(self.update_url(self.book1.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -249,7 +252,7 @@ class BookAPITests(APITestCase):
         Ensure authenticated users can delete a book.
         Permissions: IsAuthenticated
         """
-        self.client.force_authenticate(user=self.user)
+        self.assertTrue(self.client.login(username=self.username, password=self.password))
         initial_book_count = Book.objects.count()
         response = self.client.delete(self.delete_url(self.book1.id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT) # 204 No Content for successful deletion
