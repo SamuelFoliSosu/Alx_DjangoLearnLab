@@ -1,33 +1,40 @@
-# api/views.py
+# advanced-api-project/api/views.py
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .models import Book, Author
-from .serializers import BookSerializer, AuthorSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from .models import Book
+from .serializers import BookSerializer
 
-class BookListCreateView(generics.ListCreateAPIView):
-    """
-    API view to list all books and create a new book.
-    It uses generics.ListCreateAPIView to handle both GET and POST requests.
-    This view demonstrates basic CRUD functionality for the Book model.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    API view to retrieve, update, or delete a single book instance.
-    It uses generics.RetrieveUpdateDestroyAPIView to handle GET, PUT, PATCH, and DELETE requests
-    for a specific book identified by its primary key.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class BookListCreateView(generics.ListCreateAPIView):
+# A generic view for listing all books.
+# It handles only GET requests.
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+# A generic view for retrieving a single book by its primary key.
+# It handles only GET requests.
+class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+# A generic view for creating a new book.
+# It handles only POST requests.
+class BookCreateView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+# A generic view for updating an existing book.
+# It handles PUT and PATCH requests.
+class BookUpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+# A generic view for deleting an existing book.
+# It handles only DELETE requests.
+class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
