@@ -8,7 +8,7 @@ from .models import Book
 from .serializers import BookSerializer
 
 class BookListView(generics.ListAPIView):
-    """
+    """ 
     A generic view for listing all books, now with filtering, searching, and ordering capabilities.
     - Filtering: Allows filtering by 'title', 'publication_year', and 'author__name'.
     - Searching: Allows searching across 'title' and 'author__name'.
