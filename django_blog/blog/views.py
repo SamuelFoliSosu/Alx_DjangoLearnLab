@@ -8,7 +8,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Post, Comment
 from django.db.models import Q
 from taggit.models import Tag
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 
 def register(request):
     if request.method == 'POST':
@@ -105,7 +105,8 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class PostCreateView(CreateView):
     model = Post
-    fields = ['title', 'content', 'tags']
+    form_class = PostForm
+    # fields = ['title', 'content', 'tags']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -113,7 +114,8 @@ class PostCreateView(CreateView):
     
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content', 'tags']
+    form_class = PostForm
+    # fields = ['title', 'content', 'tags']
     template_name = 'blog/post_form.html'
 
     def form_valid(self, form):
@@ -129,7 +131,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
-    success_url = reverse_lazy('posts') # Redirect to the posts list after deletion
+    success_url = reverse_lazy('posts') 
 
     def test_func(self):
         post = self.get_object()
