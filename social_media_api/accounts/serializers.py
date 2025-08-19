@@ -1,7 +1,10 @@
 # accounts/serializers.py
 
 from rest_framework import serializers
-from .models import User
+from rest_framework.authtoken.models import Token # New Import
+from django.contrib.auth import get_user_model # New Import
+
+User = get_user_model() # This is the preferred way to get the user model
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,11 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['followers', 'following']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True)
+    token = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'bio']
+        fields = ['username', 'email', 'password', 'bio', 'token']
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -23,4 +27,5 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
             bio=validated_data.get('bio', ''),
         )
+        token = Token.objects.create(user=user)
         return user

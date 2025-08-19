@@ -9,15 +9,13 @@ from .serializers import UserRegistrationSerializer, UserSerializer
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
-
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        user = User.objects.get(username=serializer.data['username'])
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key}, status=status.HTTP_201_CREATED, headers=headers)
+        user = serializer.save()
+        token = Token.objects.get(user=user)
+        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
 
 class UserLoginView(APIView):
     def post(self, request, *args, **kwargs):
