@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['followers', 'following']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField()
     
     class Meta:
         model = User
