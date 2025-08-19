@@ -4,6 +4,11 @@
     <article class="media content-section">
         <div class="media-body">
             <div class="article-metadata">
+                <div class="tags">
+                    {% for tag in object.tags.all %}
+                        <a href="{% url 'posts_by_tag' tag.slug %}">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
                 <a class="mr-2" href="#">{{ object.author.username }}</a>
                 <small class="text-muted">{{ object.published_date|date:"F d, Y" }}</small>
                 {% if object.author == user %}
