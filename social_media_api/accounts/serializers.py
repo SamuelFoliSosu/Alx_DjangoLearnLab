@@ -14,18 +14,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    token = serializers.CharField(read_only=True)
-
+    
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'bio', 'token']
+        fields = ['username', 'email', 'password', 'bio']
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+        user = get_user_model().objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
             bio=validated_data.get('bio', ''),
         )
-        token = Token.objects.create(user=user)
+        Token.objects.create(user=user)
         return user
