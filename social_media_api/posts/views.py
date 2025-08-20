@@ -45,19 +45,10 @@ class LikeView(APIView):
         post = get_object_or_404(Post, pk=pk)
         user = request.user
         like, created = Like.objects.get_or_create(user=user, post=post)
+        
         if not created:
+            # If the like already existed, it means the user is unliking the post
             like.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        # Optionally, create a notification here
-        # from notifications.models import Notification
-        # from django.contrib.contenttypes.models import ContentType
-        # content_type = ContentType.objects.get_for_model(post)
-        # Notification.objects.create(
-        #    recipient=post.author,
-        #    actor=user,
-        #    verb="liked",
-        #    target=post
-        # )
-
-        return Response(status=status.HTTP_201_CREATED)
+            return Response({'status': 'unliked'}, status=status.HTTP_204_NO_CONTENT)
+        
+        return Response({'status': 'liked'}, status=status.HTTP_201_CREATED)
