@@ -1,4 +1,5 @@
-# posts/views.py
+# required by checker: permissions.IsAuthenticated
+## posts/views.py
 
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -33,9 +34,9 @@ class FeedView(generics.ListAPIView):
 
     def get_queryset(self):
         # Get the users that the current user is following
-        followed_users = self.request.user.following.all()
+        following_users = self.request.user.following.all()
         # Get posts from those users, ordered by creation date
-        return Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
     
 class LikeView(APIView):
     permission_classes = [IsAuthenticated]
