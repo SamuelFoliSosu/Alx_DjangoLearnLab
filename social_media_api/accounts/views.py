@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import get_object_or_404
 from .models import User
 from .serializers import UserRegistrationSerializer, UserSerializer
@@ -33,8 +33,11 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     lookup_field = 'username'
 
+# We use get_user_model() as a best practice to reference the custom user model.
+CustomUser = get_user_model() 
+
 class FollowUserView(generics.GenericAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
@@ -46,7 +49,7 @@ class FollowUserView(generics.GenericAPIView):
         return Response({'status': 'You are now following this user.'}, status=status.HTTP_200_OK)
 
 class UnfollowUserView(generics.GenericAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
