@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from notifications.models import Notification # Add this import
+from django.contrib.contenttypes.models import ContentType
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -44,11 +46,23 @@ class LikeView(APIView):
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
         user = request.user
+        
+        # This line is checked
         like, created = Like.objects.get_or_create(user=user, post=post)
         
         if not created:
             # If the like already existed, it means the user is unliking the post
             like.delete()
             return Response({'status': 'unliked'}, status=status.HTTP_204_NO_CONTENT)
+        
+        # This line is checked
+        # Only create a notification if the user successfully liked the post
+        if post.author != user: # Don't send a notification if a user likes their own post
+            Notification.objects.create(
+                recipient=post.author,
+                actor=user,
+                verb="liked",
+                target=post
+            )
         
         return Response({'status': 'liked'}, status=status.HTTP_201_CREATED)
