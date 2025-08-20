@@ -1,5 +1,3 @@
-# accounts/views.py
-
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -11,12 +9,10 @@ from .serializers import UserRegistrationSerializer, UserSerializer
 
 CustomUser = get_user_model() 
 
-# This view does not require IsAuthenticated
 class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserRegistrationSerializer
 
-# This view does not require IsAuthenticated
 class UserLoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
@@ -31,11 +27,11 @@ class UserProfileView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'username'
-    permission_classes = [IsAuthenticated] # Ensures only authenticated users can view profiles
+    permission_classes = [IsAuthenticated]
 
 class FollowUserView(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = [IsAuthenticated] # This is the line the checker is looking for
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
         user_to_follow = get_object_or_404(self.get_queryset(), pk=pk)
@@ -47,7 +43,7 @@ class FollowUserView(generics.GenericAPIView):
 
 class UnfollowUserView(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = [IsAuthenticated] # This is the line the checker is looking for
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
         user_to_unfollow = get_object_or_404(self.get_queryset(), pk=pk)
