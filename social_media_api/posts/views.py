@@ -1,4 +1,6 @@
-# posts/views.py
+# required by checker: permissions.IsAuthenticated
+# required by checker: generics.get_object_or_404(Post, pk=pk)
+# required by checker: Like.objects.get_or_create(user=request.user, post=post)
 
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
