@@ -1,14 +1,23 @@
 # social_media_api/production_settings.py
 
 from .settings import *
-import dj_database_url
 
 DEBUG = False
 
 ALLOWED_HOSTS = ['your-app-name.herokuapp.com', 'your-domain.com']
 
+ALLOWED_HOSTS = ['your-pythonanywhere-username.pythonanywhere.com'] # Update this
+
 # Database configuration
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # or 'django.db.backends.postgresql'
+        'NAME': 'your-db-name',
+        'USER': 'your-db-user',
+        'PASSWORD': 'your-db-password',
+        'HOST': 'your-db-host',
+    }
+}
 
 # Security settings
 SECURE_SSL_REDIRECT = True
