@@ -135,3 +135,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# General security settings
+SECURE_SSL_REDIRECT = True # Redirect all HTTP requests to HTTPS
+SESSION_COOKIE_SECURE = True # Only send session cookies over HTTPS
+CSRF_COOKIE_SECURE = True # Only send CSRF cookies over HTTPS
+
+# XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Clickjacking protection
+X_FRAME_OPTIONS = 'DENY'
