@@ -4,7 +4,7 @@ from .settings import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['your-app-name.herokuapp.com', 'your-domain.com']
+# ALLOWED_HOSTS = ['your-app-name.herokuapp.com', 'your-domain.com']
 
 ALLOWED_HOSTS = ['your-pythonanywhere-username.pythonanywhere.com'] # Update this
 

@@ -1,0 +1,6 @@
+
+
+
+Database host address:samuelfolisosu.mysql.pythonanywhere-services.com
+Username:samuelfolisosu
+password: QhT.Hb!3gnjk7r!
